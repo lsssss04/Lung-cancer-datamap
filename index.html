@@ -1,0 +1,255 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.6">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 12.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000}
+    p.p2 {margin: 0.0px 0.0px 12.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000; min-height: 14.0px}
+    span.s1 {font-kerning: none}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
+<p class="p1"><span class="s1">&lt;html lang="en"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;head&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;title&gt;Thoracic Oncology DataMap | Systems Research&lt;/title&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"&gt;&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;style&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>:root {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>--bg: #05070a;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>--panel: #11141b;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>--accent: #00e5ff;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>--text: #e2e8f0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>--nsclc: #4cc9f0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>--metformin: #7209b7;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>--immunology: #f72585;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>body, html {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin: 0; padding: 0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 100%; height: 100%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: var(--bg);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: var(--text);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>overflow: hidden;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>#map-canvas { width: 100vw; height: 100vh; }</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>/* UI Overlays */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.gui { position: absolute; z-index: 100; pointer-events: none; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.interactive { pointer-events: auto; }</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>#header { top: 20px; left: 20px; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>#header h1 { font-size: 1.2rem; margin: 0; color: var(--accent); letter-spacing: 2px; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>#header p { font-size: 0.7rem; opacity: 0.6; margin: 4px 0; }</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>#search-container { top: 20px; right: 20px; width: 300px; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>input[type="text"] {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 100%; background: var(--panel); border: 1px solid #2d3748;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: white; padding: 10px 15px; border-radius: 20px; outline: none;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>#sidebar {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>right: 20px; top: 80px; width: 300px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: rgba(17, 20, 27, 0.9);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: 1px solid #2d3748;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 12px; padding: 20px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>backdrop-filter: blur(10px);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>#timeline-container {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>bottom: 40px; left: 50%; transform: translateX(-50%);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 60%; background: var(--panel);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 15px 30px; border-radius: 50px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: flex; align-items: center; gap: 20px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: 1px solid #334155;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>input[type="range"] { flex-grow: 1; accent-color: var(--accent); cursor: pointer; }</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>/* D3 Styling */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.node { stroke-width: 1.5px; transition: r 0.3s; cursor: pointer; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.node:hover { stroke: #fff; stroke-width: 3px; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.link { stroke: #1e293b; stroke-opacity: 0.4; pointer-events: none; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.label { fill: white; font-size: 10px; font-weight: 300; pointer-events: none; opacity: 0.7; }</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.tag { font-size: 0.6rem; padding: 2px 6px; border-radius: 3px; background: #1e293b; margin-right: 4px; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;body&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="header" class="gui"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;h1&gt;O-LUNG DATAMAP&lt;/h1&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;p&gt;SYSTEMS-ENGINEERING VIEW: NSCLC RESEARCH LANDSCAPE&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="search-container" class="gui interactive"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;input type="text" id="search" placeholder="Filter by mutation (EGFR, ALK, KRAS)..."&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="sidebar" class="gui interactive"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="details"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;h2 style="font-size: 1rem; color: var(--accent);"&gt;Discovery Engine&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;p style="font-size: 0.8rem; color: #94a3b8;"&gt;Click a node to analyze its metabolic or clinical impact.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div style="margin-top: 20px; font-size: 0.7rem; border-top: 1px solid #334155; pt: 10px;"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div style="display:flex; justify-content:space-between; margin-bottom:5px;"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;span&gt;Total Nodes&lt;/span&gt; &lt;span id="count-nodes"&gt;0&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div style="display:flex; justify-content:space-between;"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;span&gt;Density&lt;/span&gt; &lt;span id="density"&gt;High&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="timeline-container" class="gui interactive"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;span style="font-weight: bold; min-width: 40px;" id="year-val"&gt;2026&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;input type="range" id="year-slider" min="2015" max="2026" value="2026"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;span style="font-size: 0.6rem; color: #64748b;"&gt;TIMELINE MOVER&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="map-canvas"&gt;&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// 1. DATA INFRASTRUCTURE</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const categories = [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{ id: "NSCLC", color: "#4cc9f0", count: 40 },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{ id: "Metformin/Metabolic", color: "#7209b7", count: 25 },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{ id: "Immunotherapy", color: "#f72585", count: 35 },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{ id: "SCLC", color: "#4895ef", count: 20 }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>];</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let nodes = [];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let links = [];</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Generate synthetic historical data</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>categories.forEach(cat =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const rootId = `root-${cat.id}`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>nodes.push({ id: rootId, label: cat.id, group: cat.id, isRoot: true, year: 2015, radius: 15 });</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>for(let i=0; i &lt; cat.count; i++) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const year = 2015 + Math.floor(Math.random() * 12);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const id = `${cat.id}-${i}`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>nodes.push({</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>id: id,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>label: "",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>group: cat.id,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>year: year,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>radius: 4 + Math.random() * 6,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>title: `Study ${cat.id} #${i + 100}`,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>abs: `Clinical analysis of ${cat.id} pathways. Year: ${year}. Correlation: 0.82.`</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>links.push({ source: rootId, target: id, year: year });</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// 2. D3 SYSTEMS SETUP</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const width = window.innerWidth;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const height = window.innerHeight;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const svg = d3.select("#map-canvas").append("svg").attr("width", width).attr("height", height);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const g = svg.append("g");</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>svg.call(d3.zoom().scaleExtent([0.1, 8]).on("zoom", (e) =&gt; g.attr("transform", e.transform)));</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const simulation = d3.forceSimulation()</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>.force("link", d3.forceLink().id(d =&gt; d.id).distance(50).strength(0.4))</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>.force("charge", d3.forceManyBody().strength(-150))</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>.force("center", d3.forceCenter(width / 2, height / 2))</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>.force("collision", d3.forceCollide().radius(d =&gt; d.radius + 5));</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const linkLayer = g.append("g").attr("class", "links");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const nodeLayer = g.append("g").attr("class", "nodes");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const labelLayer = g.append("g").attr("class", "labels");</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// 3. RENDER ENGINE</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function update(yearFilter, searchStr) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const filteredNodes = nodes.filter(n =&gt;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>n.year &lt;= yearFilter &amp;&amp;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>(searchStr === "" || n.group.toLowerCase().includes(searchStr) || n.title?.toLowerCase().includes(searchStr))</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const nodeIds = new Set(filteredNodes.map(n =&gt; n.id));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const filteredLinks = links.filter(l =&gt;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>nodeIds.has(typeof l.source === 'object' ? l.source.id : l.source) &amp;&amp;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>nodeIds.has(typeof l.target === 'object' ? l.target.id : l.target)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('count-nodes').innerText = filteredNodes.length;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Nodes</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const n = nodeLayer.selectAll("circle").data(filteredNodes, d =&gt; d.id);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>n.exit().remove();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const nEnter = n.enter().append("circle")</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>.attr("class", "node")</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>.attr("r", d =&gt; d.radius)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>.attr("fill", d =&gt; categories.find(c =&gt; c.id === d.group).color)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>.style("opacity", d =&gt; d.isRoot ? 1 : 0.8)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>.on("click", (e, d) =&gt; showDetails(d))</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>.call(d3.drag().on("start", dragStart).on("drag", dragging).on("end", dragEnd));</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Links</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const l = linkLayer.selectAll("line").data(filteredLinks, d =&gt; `${d.source.id || d.source}-${d.target.id || d.target}`);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>l.exit().remove();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>l.enter().append("line").attr("class", "link").attr("stroke", "#1e293b");</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Labels</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const lab = labelLayer.selectAll("text").data(filteredNodes.filter(d =&gt; d.isRoot), d =&gt; d.id);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>lab.exit().remove();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>lab.enter().append("text")</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>.attr("class", "label")</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>.text(d =&gt; d.label)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>.attr("dy", -20)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>.attr("text-anchor", "middle");</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>simulation.nodes(filteredNodes);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>simulation.force("link").links(filteredLinks);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>simulation.alpha(0.3).restart();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// 4. INTERACTION LOGIC</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function showDetails(d) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const container = document.getElementById('details');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>container.innerHTML = `</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h2 style="font-size: 1rem; color: var(--accent); margin-bottom: 5px;"&gt;${d.title || d.label}&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div style="margin-bottom: 10px;"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="tag"&gt;${d.group}&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="tag"&gt;${d.year}&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p style="font-size: 0.8rem; line-height: 1.4; color: #cbd5e1;"&gt;${d.abs || 'Core hub for research cluster.'}&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;button style="margin-top:10px; background:var(--accent); color:#000; border:none; padding:5px 12px; border-radius:4px; font-weight:bold; cursor:pointer; font-size:0.7rem;"&gt;ANALYZE DATA&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('year-slider').oninput = function() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('year-val').innerText = this.value;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>update(this.value, document.getElementById('search').value.toLowerCase());</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('search').oninput = function() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>update(document.getElementById('year-slider').value, this.value.toLowerCase());</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>simulation.on("tick", () =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>linkLayer.selectAll("line").attr("x1", d =&gt; d.source.x).attr("y1", d =&gt; d.source.y).attr("x2", d =&gt; d.target.x).attr("y2", d =&gt; d.target.y);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>nodeLayer.selectAll("circle").attr("cx", d =&gt; d.x).attr("cy", d =&gt; d.y);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>labelLayer.selectAll("text").attr("x", d =&gt; d.x).attr("y", d =&gt; d.y);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function dragStart(e) { if (!e.active) simulation.alphaTarget(0.3).restart(); e.subject.fx = e.subject.x; e.subject.fy = e.subject.y; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function dragging(e) { e.subject.fx = e.x; e.subject.fy = e.y; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function dragEnd(e) { if (!e.active) simulation.alphaTarget(0); e.subject.fx = null; e.subject.fy = null; }</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>update(2026, "");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>window.onresize = () =&gt; { svg.attr("width", window.innerWidth).attr("height", window.innerHeight); };</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+</body>
+</html>
